@@ -1,0 +1,28 @@
+name: SMS Runner
+
+on:
+  schedule:
+    - cron: "* * * * *"   # every 1 minute
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install gspread google-auth
+
+      - name: Create service_account.json file
+        run: echo '${{ secrets.GOOGLE_CREDS }}' > service_account.json
+
+      - name: Run script
+        run: python randomtest.py
