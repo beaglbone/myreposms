@@ -9,7 +9,7 @@ from google.oauth2.service_account import Credentials
 SERVICE_ACCOUNT_FILE = "service_account.json"
 SPREADSHEET_ID = "1uml8_D_bCd1eZoGVA1Xqs5y_JzrqMl3utu2g-jhvQZw"
 
-TEST_MODE = True   # ✅ Set to False for normal random mode
+TEST_MODE = False   # ✅ Set to False for normal random mode
 
 MAX_COUNTRIES_PER_RUN = 12
 MAX_NUMBERS_PER_COUNTRY = 6
@@ -130,4 +130,5 @@ if messages_to_insert:
     messages_ws.append_rows(messages_to_insert, value_input_option="RAW")
     print(f"✅ {len(messages_to_insert)} SMS message(s) generated")
 else:
+
     print("⚠️ No messages generated")
