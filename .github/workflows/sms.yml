@@ -2,12 +2,13 @@ name: SMS Runner
 
 on:
   schedule:
-    - cron: "* * * * *"   # every 1 minute
+    - cron: "0 * * * *"   # every 1 hour
   workflow_dispatch:
 
 jobs:
   run-script:
     runs-on: ubuntu-latest
+    timeout-minutes: 59   # auto kill before next hour
 
     steps:
       - name: Checkout repository
@@ -24,5 +25,17 @@ jobs:
       - name: Create service_account.json file
         run: echo '${{ secrets.GOOGLE_CREDS }}' > service_account.json
 
-      - name: Run script
-        run: python randomtest.py
+      - name: Run script every 45 seconds for 55 minutes
+        run: |
+          start=$(date +%s)
+          while true
+          do
+            python randomtest.py
+            sleep 45
+            now=$(date +%s)
+            elapsed=$((now - start))
+            if [ $elapsed -ge 3300 ]; then   # 55 minutes
+              echo "Stopping before next scheduled run"
+              break
+            fi
+          done
